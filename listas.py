@@ -84,7 +84,13 @@ class Lista:
         """
         Devuelve el número de elementos en la lista.
         """
-        return 0
+        # Si la lista está vacía, devuelve 0.
+        if self.cabeza is None and self.cola is None:
+            return 0
+        else:
+        # Se cuenta al primer elemento y se suma la longitud de la cola.
+            return 1 + self.cola.longitud()
+         
 
     def contiene(self,elemento):
         """
@@ -147,14 +153,44 @@ class Lista:
         Devuelve la lista resultante de aplicar una función f sobre los elementos
         de la lista.
         """
-        return Lista()
+        # Si la lista está vacía, entonces devuelve una lista vacía.
+        if self.cabeza is None and self.cola is None:
+            return Lista()
+
+        # Crear una nueva lista vacía
+        nueva_lista = Lista()
+        # El primer elemento de la lista nueva será la función evaluada en
+        # en el primer elemento de nueva lista normal.
+        nueva_lista.cabeza = f(self.cabeza)
+        # El segundo elemento de la nueva lista es donde se aplica la recursión
+        # con la cola, que es una lista.
+        nueva_lista.cola = self.cola.mapea(f)
+        return nueva_lista
 
     def filtra(self,f):
         """
         Devuelve la lista resultante de seleccionar los elementos que cumplan
         con la condición f.
         """
-        return Lista()
+        # Si la lista está vacía, se regresa una lista vacía.
+        if self.cabeza is None and self.cola is None:
+            return Lista()
+
+        # Si se cumple la condición con el primer elemento,
+        if f(self.cabeza):
+            # Se crea una nueva lista
+            nueva_lista = Lista()
+            # A esta nueva lista se le añade el primer elemento
+            # de la lista que ya teníamos
+            nueva_lista.cabeza = self.cabeza
+            # A esta nueva lista se le añade el caso recursivo
+            # de la cola de la lista que ya teníamos (la cola tambíen
+            # es una lista)
+            nueva_lista.cola = self.cola.filtra(f)
+            return nueva_lista
+        # Si no, entonces se salta al caso recursivo de la cola.
+        else:
+          return self.cola.filtra(f)
 
     def __eq__(self, lista):
         """
